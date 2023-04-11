@@ -1,0 +1,1 @@
+Para correr el proyecto basta con hacer docker compose up -d y acceder a localhost:8080/graphql
