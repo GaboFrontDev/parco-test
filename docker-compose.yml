@@ -1,0 +1,44 @@
+version: '3'
+
+services:
+  express-server:
+    environment:
+      - NODE_ENV=development
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./:/usr/src/app
+    container_name: express-server
+    volumes:
+      - ./:/app
+      - /app/node_modules
+    expose:
+      - '8080'
+    ports:
+      - '8080:3000'
+    networks:
+      - backend
+    command: npm run dev
+    depends_on:
+      - pg
+  pg:
+    container_name: pg
+    image: postgres:14.5-alpine
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: dev
+    restart: "always"
+    networks:
+      - backend
+
+networks:
+    backend:
+        driver: bridge
+
+volumes:
+  data:
+    driver: local
